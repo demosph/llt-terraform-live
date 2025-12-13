@@ -7,12 +7,6 @@ service:
   port: 3000
   type: ClusterIP
 
-serviceAccount:
-  create: true
-  name: ""
-  annotations: {}
-  automount: true
-
 replicaCount: 2
 
 configmap:
@@ -26,7 +20,8 @@ configmap:
     DB_NAME: "llt-trip"
 
 envFrom:
-  - secretRef:    { name: auth-jwt-db }
+  - secretRef:
+      name: auth-jwt-db
 
 env: []  # додаткові змінні, якщо треба
 

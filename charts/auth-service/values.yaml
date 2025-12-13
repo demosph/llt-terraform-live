@@ -7,12 +7,6 @@ service:
   port: 3000
   type: ClusterIP
 
-serviceAccount:
-  create: true
-  name: ""
-  annotations: {}
-  automount: true
-
 replicaCount: 2
 
 configmap:
@@ -31,26 +25,27 @@ configmap:
     GOOGLE_CLIENT_ID: "812448263301-a2lpffgig4ot2ai7ajm0s5qlsfsumvqi.apps.googleusercontent.com"
 
 envFrom:
-  - secretRef: { name: auth-jwt-db }
+  - secretRef:
+      name: auth-jwt-db
 
-env: []  # додаткові змінні, якщо треба
+env: [] # додаткові змінні, якщо треба
 
 ingress:
   enabled: false
   #className: alb
   #annotations:
-    #alb.ingress.kubernetes.io/scheme: internet-facing
-    #alb.ingress.kubernetes.io/target-type: ip
-    #alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    #alb.ingress.kubernetes.io/healthcheck-path: /health
+  #alb.ingress.kubernetes.io/scheme: internet-facing
+  #alb.ingress.kubernetes.io/target-type: ip
+  #alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+  #alb.ingress.kubernetes.io/healthcheck-path: /health
   #hosts:
-    #- host: auth.dev.llt.io
-      #paths:
-        #- path: /api/v1
-          #pathType: Prefix
+  #- host: auth.dev.llt.io
+  #paths:
+  #- path: /api/v1
+  #pathType: Prefix
   #tls:
-    #- secretName: auth-tls
-      #hosts: [auth.dev.llt.io]
+  #- secretName: auth-tls
+  #hosts: [auth.dev.llt.io]
 
 livenessProbe:
   enabled: true

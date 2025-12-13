@@ -15,52 +15,80 @@ spec:
       labels:
         {{- include "svc.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}{{ toYaml . | nindent 8 }}{{- end }}
+      {{- with .Values.podAnnotations }}
       annotations:
-        {{- with .Values.podAnnotations }}{{ toYaml . | nindent 8 }}{{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
-      serviceAccountName: {{ default (include "svc.fullname" .) include "svc.serviceAccountName" . }}
-      {{- if .Values.podSecurityContext.enabled }}
+      serviceAccountName: {{ include "svc.serviceAccountName" . }}
+      {{- $psc := default (dict) .Values.podSecurityContext -}}
+      {{- if (default false $psc.enabled) }}
       securityContext:
-        fsGroup: {{ .Values.podSecurityContext.fsGroup | default 1001 }}
+        fsGroup: {{ default 1001 $psc.fsGroup }}
       {{- end }}
       containers:
         - name: {{ include "svc.name" . }}
           image: "{{ required "image.repository is required" .Values.image.repository }}:{{ required "image.tag is required" .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+          imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: {{ required "service.port is required" .Values.service.port }}
               protocol: TCP
+
+          {{- /* ---- envFrom (уніфікований список) ---- */ -}}
+          {{- $extraEnvFrom := default (list) .Values.envFrom -}}
+          {{- $EF := list -}}
+          {{- if .Values.configmap.create -}}
+            {{- $EF = append $EF (dict "configMapRef" (dict "name" (include "svc.configmapName" .))) -}}
+          {{- end -}}
+          {{- $EF = concat $EF $extraEnvFrom -}}
+          {{- if gt (len $EF) 0 }}
           envFrom:
-            {{- if .Values.configmap.create }}
-            - configMapRef:
-                name: {{ include "svc.configmapName" . }}
-            {{- end }}
-            {{- range .Values.envFrom }}
-            - {{- toYaml . | nindent 14 }}
-            {{- end }}
+{{ toYaml $EF | nindent 12 }}
+          {{- end }}
+
+          {{- /* ---- env ---- */ -}}
+          {{- with (default (list) .Values.env) }}
+          {{- if gt (len .) 0 }}
           env:
-            {{- range .Values.env }}
-            - {{- toYaml . | nindent 12 }}
-            {{- end }}
-          {{- if .Values.livenessProbe.enabled }}
+{{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+
+          {{- /* ---- probes без поля enabled ---- */ -}}
+          {{- $lp := default (dict "enabled" false) .Values.livenessProbe -}}
+          {{- if $lp.enabled }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+{{ omit $lp "enabled" | toYaml | nindent 12 }}
           {{- end }}
-          {{- if .Values.readinessProbe.enabled }}
+
+          {{- $rp := default (dict "enabled" false) .Values.readinessProbe -}}
+          {{- if $rp.enabled }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+{{ omit $rp "enabled" | toYaml | nindent 12 }}
           {{- end }}
+
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+{{- toYaml .Values.resources | nindent 12 }}
+
+          {{- with .Values.extraVolumeMounts }}
           volumeMounts:
-            {{- with .Values.extraVolumeMounts }}{{ toYaml . | nindent 12 }}{{- end }}
+{{ toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.extraVolumes }}
       volumes:
-        {{- with .Values.extraVolumes }}{{ toYaml . | nindent 8 }}{{- end }}
+{{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{- with .Values.nodeSelector }}{{ toYaml . | nindent 8 }}{{- end }}
+{{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
       tolerations:
-        {{- with .Values.tolerations }}{{ toYaml . | nindent 8 }}{{- end }}
+{{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
       affinity:
-        {{- with .Values.affinity }}{{ toYaml . | nindent 8 }}{{- end }}
+{{ toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}

@@ -27,8 +27,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{- define "svc.serviceAccountName" -}}
-{{- $sa := .Values.serviceAccount | default (dict "create" true "name" "") -}}
-{{- if $sa.create | default true -}}
+{{- $sa := default (dict "create" true "name" "") .Values.serviceAccount -}}
+{{- if (default true $sa.create) -}}
   {{- if $sa.name }}{{ $sa.name }}{{ else }}{{ include "svc.fullname" . }}{{ end -}}
 {{- else -}}
   {{- default "default" $sa.name -}}

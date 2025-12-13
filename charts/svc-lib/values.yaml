@@ -1,0 +1,14 @@
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+  automount: true
+podAnnotations: {}
+podLabels: {}
+imagePullSecrets: []
+
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
