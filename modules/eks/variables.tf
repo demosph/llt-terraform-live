@@ -41,7 +41,7 @@ variable "min_size" {
 variable "ssm_prefix" {
   description = "SSM Parameter Store Prefix for Secrets"
   type        = string
-  default     = "/apps/llt/postgres"
+  default     = "/apps"
 }
 
 variable "eso_namespace" {

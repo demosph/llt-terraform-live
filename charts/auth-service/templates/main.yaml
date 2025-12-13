@@ -6,4 +6,6 @@
 ---
 {{ include "svc.configmap" . }}
 ---
+{{include "svc.serviceaccount" . }}
+---
 {{ include "svc.hpa" . }}
