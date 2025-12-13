@@ -25,3 +25,12 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "svc.configmapName" -}}
 {{- default (printf "%s-config" (include "svc.fullname" .)) .Values.configmap.name -}}
 {{- end }}
+
+{{- define "svc.serviceAccountName" -}}
+{{- $sa := .Values.serviceAccount | default (dict "create" true "name" "") -}}
+{{- if $sa.create | default true -}}
+  {{- if $sa.name }}{{ $sa.name }}{{ else }}{{ include "svc.fullname" . }}{{ end -}}
+{{- else -}}
+  {{- default "default" $sa.name -}}
+{{- end -}}
+{{- end -}}

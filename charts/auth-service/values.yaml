@@ -7,6 +7,12 @@ service:
   port: 3000
   type: ClusterIP
 
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+  automount: true
+
 replicaCount: 2
 
 configmap:

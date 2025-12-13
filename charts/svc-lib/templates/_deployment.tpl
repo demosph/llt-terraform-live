@@ -18,7 +18,7 @@ spec:
       annotations:
         {{- with .Values.podAnnotations }}{{ toYaml . | nindent 8 }}{{- end }}
     spec:
-      serviceAccountName: {{ default (include "svc.fullname" .) .Values.serviceAccount.name }}
+      serviceAccountName: {{ default (include "svc.fullname" .) include "svc.serviceAccountName" . }}
       {{- if .Values.podSecurityContext.enabled }}
       securityContext:
         fsGroup: {{ .Values.podSecurityContext.fsGroup | default 1001 }}
