@@ -1,0 +1,43 @@
+image:
+  repository: 265766434317.dkr.ecr.us-east-2.amazonaws.com/llt-trip-service
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 3000
+  type: ClusterIP
+
+replicaCount: 2
+
+configmap:
+  create: true
+  data:
+    NODE_ENV: "test"
+    PORT: "3000"
+    DB_HOST: "pg-shared-postgresql.postgresql.svc.cluster.local"
+    DB_PORT: 5432
+    DB_USER: "postgres"
+    DB_NAME: "llt-trip"
+
+envFrom:
+  - secretRef:    { name: auth-jwt-db }
+
+env: []  # додаткові змінні, якщо треба
+
+ingress:
+  enabled: false
+
+livenessProbe:
+  enabled: true
+  httpGet: { path: /api/v1/health, port: http }
+  initialDelaySeconds: 10
+readinessProbe:
+  enabled: true
+  httpGet: { path: /api/v1/health, port: http }
+  initialDelaySeconds: 5
+
+resources:
+  requests: { cpu: 200m, memory: 256Mi }
+  limits: {}
+
+podSecurityContext: { enabled: true, fsGroup: 1001 }

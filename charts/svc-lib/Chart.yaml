@@ -1,0 +1,5 @@
+apiVersion: v2
+name: svc-lib
+description: Common library templates for LittleLifeTrip services
+type: library
+version: 0.1.0

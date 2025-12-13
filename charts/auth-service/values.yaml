@@ -1,0 +1,62 @@
+image:
+  repository: 265766434317.dkr.ecr.us-east-2.amazonaws.com/llt-auth-service
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 3000
+  type: ClusterIP
+
+replicaCount: 2
+
+configmap:
+  create: true
+  data:
+    NODE_ENV: "test"
+    PORT: "3000"
+    DB_HOST: "pg-shared-postgresql.postgresql.svc.cluster.local"
+    DB_PORT: 5432
+    POSTGRES_USER: "postgres"
+    POSTGRES_DB: "llt-auth"
+    CORS_ORIGIN: "*"
+    JWT_ALG: "HS256"
+    ACCESS_TOKEN_TTL: "1h"
+    REFRESH_TOKEN_TTL: "10d"
+    GOOGLE_CLIENT_ID: "812448263301-a2lpffgig4ot2ai7ajm0s5qlsfsumvqi.apps.googleusercontent.com"
+
+envFrom:
+  - secretRef: { name: auth-jwt-db }
+
+env: []  # додаткові змінні, якщо треба
+
+ingress:
+  enabled: false
+  #className: alb
+  #annotations:
+    #alb.ingress.kubernetes.io/scheme: internet-facing
+    #alb.ingress.kubernetes.io/target-type: ip
+    #alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    #alb.ingress.kubernetes.io/healthcheck-path: /health
+  #hosts:
+    #- host: auth.dev.llt.io
+      #paths:
+        #- path: /api/v1
+          #pathType: Prefix
+  #tls:
+    #- secretName: auth-tls
+      #hosts: [auth.dev.llt.io]
+
+livenessProbe:
+  enabled: true
+  httpGet: { path: /health, port: http }
+  initialDelaySeconds: 10
+readinessProbe:
+  enabled: true
+  httpGet: { path: /health, port: http }
+  initialDelaySeconds: 5
+
+resources:
+  requests: { cpu: 200m, memory: 256Mi }
+  limits: {}
+
+podSecurityContext: { enabled: true, fsGroup: 1001 }

@@ -1,0 +1,103 @@
+repositories:
+  - name: llt-helm-charts
+    namespace: argocd
+    url: ${github_repo_url}
+    username: ${github_user}
+    password: ${github_pat}
+    insecure: false
+    enableLfs: true
+
+# Global repository configuration
+repoConfig:
+  insecure: false
+  enableLfs: true
+
+# ====== Applications (one per service) ======
+applications:
+  - name: auth-service
+    namespace: argocd
+    project: default
+    source:
+      repoURL: ${github_repo_url}
+      path: "charts/auth-service"
+      targetRevision: "main"
+      helm:
+        valueFiles:
+          - "values.yaml"
+    destination:
+      server: "https://kubernetes.default.svc"
+      namespace: "apps"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - "CreateNamespace=true"
+
+  - name: trip-service
+    namespace: argocd
+    project: default
+    source:
+      repoURL: ${github_repo_url}
+      path: "charts/trip-service"
+      targetRevision: "main"
+      helm:
+        valueFiles:
+          - "values.yaml"
+    destination:
+      server: "https://kubernetes.default.svc"
+      namespace: "apps"
+    syncPolicy:
+      automated: { prune: true, selfHeal: true }
+      syncOptions: ["CreateNamespace=true"]
+
+  - name: integration-service
+    namespace: argocd
+    project: default
+    source:
+      repoURL: ${github_repo_url}
+      path: "charts/integration-service"
+      targetRevision: "main"
+      helm:
+        valueFiles:
+          - "values.yaml"
+    destination:
+      server: "https://kubernetes.default.svc"
+      namespace: "apps"
+    syncPolicy:
+      automated: { prune: true, selfHeal: true }
+      syncOptions: ["CreateNamespace=true"]
+
+  - name: ai-recommender
+    namespace: argocd
+    project: default
+    source:
+      repoURL: ${github_repo_url}
+      path: "charts/ai-recommender"
+      targetRevision: "main"
+      helm:
+        valueFiles:
+          - "values.yaml"
+    destination:
+      server: "https://kubernetes.default.svc"
+      namespace: "apps"
+    syncPolicy:
+      automated: { prune: true, selfHeal: true }
+      syncOptions: ["CreateNamespace=true"]
+
+  - name: api-gateway
+    namespace: argocd
+    project: default
+    source:
+      repoURL: ${github_repo_url}
+      path: "charts/api-gateway"
+      targetRevision: "main"
+      helm:
+        valueFiles:
+          - "values.yaml"
+    destination:
+      server: "https://kubernetes.default.svc"
+      namespace: "apps"
+    syncPolicy:
+      automated: { prune: true, selfHeal: true }
+      syncOptions: ["CreateNamespace=true"]
