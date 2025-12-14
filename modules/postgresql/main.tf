@@ -1,18 +1,8 @@
 locals {
-  # Генеруємо idempotent SQL-блоки для кожної БД:
-  db_blocks = [
-    for db in var.databases : <<-EOT
-    DO $do$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = '${db}') THEN
-        EXECUTE format('CREATE DATABASE %I', '${db}');
-      END IF;
-    END
-    $do$;
-    EOT
-  ]
 
-  init_sql = join("\n", local.db_blocks)
+  init_sql = join("\n", [
+    for db in var.databases : "CREATE DATABASE \"${db}\";"
+  ])
 
   base_values = {
     architecture = "standalone"
