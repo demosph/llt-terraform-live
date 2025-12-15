@@ -266,3 +266,5 @@ kubectl logs deploy/<service-name> -n apps --tail=100
   - Розробник пушить зміни у `charts/values.yaml`.
   - Argo CD синхронізує стан із кластером.
   - Автоматичне оновлення (self-heal) у випадку ручних змін у кластері.
+
+![Argo CD](images/argocd-app-2.jpg)

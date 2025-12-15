@@ -30,22 +30,23 @@ envFrom:
 
 env: [] # додаткові змінні, якщо треба
 
+service:
+  type: ClusterIP
+  port: 3000
+
 ingress:
-  enabled: false
-  #className: alb
-  #annotations:
-  #alb.ingress.kubernetes.io/scheme: internet-facing
-  #alb.ingress.kubernetes.io/target-type: ip
-  #alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-  #alb.ingress.kubernetes.io/healthcheck-path: /health
-  #hosts:
-  #- host: auth.dev.llt.io
-  #paths:
-  #- path: /api/v1
-  #pathType: Prefix
-  #tls:
-  #- secretName: auth-tls
-  #hosts: [auth.dev.llt.io]
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+  hosts:
+    - host: auth.dev.llt.io
+      paths:
+        - path: /api/v1
+          pathType: Prefix
 
 livenessProbe:
   enabled: true
