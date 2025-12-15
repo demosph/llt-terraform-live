@@ -37,7 +37,7 @@ ingress:
     - paths:
       - path: /api/v1/trips
         pathType: Prefix
-      - path: /auth/docs
+      - path: /trips/docs
         pathType: Prefix
 
 livenessProbe:
