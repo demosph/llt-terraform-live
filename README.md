@@ -208,11 +208,15 @@ terraform destroy
 - **`kubectl` та `helm` налаштовані на ваш кластер.**
 - **Образ мікросервіса запушено в ECR.**
 
-#### 1. Налаштування хоста бази даних
+#### 1. Налаштування .kube config файлу
+
+`aws eks --region us-east-2 update-kubeconfig --name eks-cluster-demo`
+
+#### 2. Налаштування хоста бази даних
 
 У файлі `\charts\<service_name>\values.yaml` задаємо значення змінної `DB_HOST` у секції config, яке ми отримали в якості виводу `connection_hint` з postgresql модуля тераформ.
 
-#### 2. Розгорнути Helm-чарт мікросервіса
+#### 3. Розгорнути Helm-чарт мікросервіса
 
 У цьому чарті:
 
@@ -268,3 +272,10 @@ kubectl logs deploy/<service-name> -n apps --tail=100
   - Автоматичне оновлення (self-heal) у випадку ручних змін у кластері.
 
 ![Argo CD](images/argocd-app-2.jpg)
+
+Отримати ALB, за якою Ingress для сервісу доступний зовні можна за допомогою команди
+`kubectl -n apps get ing auth-service-auth-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'`
+
+Потім цей ALB можна використати для доступу до сервісу
+
+![Argo CD](images/auth-service.jpg)
