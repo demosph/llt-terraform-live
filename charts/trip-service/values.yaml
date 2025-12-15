@@ -32,9 +32,11 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
-    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-path: /trips/health
   hosts:
     - paths:
+      - path: /trips/health
+        pathType: Prefix
       - path: /api/v1/trips
         pathType: Prefix
       - path: /trips/docs
@@ -42,11 +44,11 @@ ingress:
 
 livenessProbe:
   enabled: true
-  httpGet: { path: /health, port: http }
+  httpGet: { path: /trips/health, port: http }
   initialDelaySeconds: 10
 readinessProbe:
   enabled: true
-  httpGet: { path: /health, port: http }
+  httpGet: { path: /trips/health, port: http }
   initialDelaySeconds: 5
 
 resources:
