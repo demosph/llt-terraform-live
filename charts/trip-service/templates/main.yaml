@@ -1,5 +1,9 @@
 {{- include "svc.deployment" . }}
+---
 {{- include "svc.service" . }}
+---
 {{- include "svc.ingress" . }}
+---
 {{- include "svc.configmap" . }}
+---
 {{- include "svc.hpa" . }}

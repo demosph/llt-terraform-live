@@ -34,10 +34,9 @@ ingress:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
     alb.ingress.kubernetes.io/healthcheck-path: /health
   hosts:
-    - host: trip.dev.llt.io
-      paths:
-        - path: /
-          pathType: Prefix
+    - paths:
+      - path: /api/v1/trips
+        pathType: Prefix
 
 livenessProbe:
   enabled: true

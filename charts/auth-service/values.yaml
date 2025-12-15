@@ -40,9 +40,8 @@ ingress:
     alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/group.name: dev-llt
   hosts:
-    # - host: auth.dev.llt.io
     - paths:
-      - path: /
+      - path: /api/v1/auth
         pathType: Prefix
 
 livenessProbe:
