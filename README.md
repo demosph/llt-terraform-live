@@ -258,7 +258,7 @@ kubectl logs deploy/<service-name> -n apps --tail=100
 ![Argo CD](images/argocd-app.jpg)
 
 #### 2. Репозиторії та застосунки
-  - У `charts/templates/` описані ресурси:
+  - У `svc-lib/templates/` описані ресурси:
     - application.yaml - конфіг для мікросервісів,
     - repository.yaml - підключення GitHub репозиторію.
 

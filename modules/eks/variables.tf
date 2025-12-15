@@ -3,6 +3,11 @@ variable "region" {
   default     = "us-east-2"
 }
 
+variable "vpc_id" {
+  description = "VPC ID where EKS is deployed (needed for AWS Load Balancer Controller)"
+  type        = string
+}
+
 variable "cluster_name" {
   description = "Name of the EKS cluster"
   default     = "example-eks-cluster"

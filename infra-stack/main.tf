@@ -17,13 +17,13 @@ module "vpc" {
 
 # Підключаємо ECR модуль
 module "ecr" {
-  source   = "../modules/ecr"
+  source = "../modules/ecr"
 
   # створюємо по модулю на кожну назву
   for_each = toset(var.ecr_repositories)
 
-  ecr_name            = each.value
-  scan_on_push        = true
+  ecr_name     = each.value
+  scan_on_push = true
 }
 
 # Підключаємо модуль EKS
@@ -36,6 +36,7 @@ module "eks" {
   desired_size  = 5                         # Бажана кількість нодів
   max_size      = 10                        # Максимальна кількість нодів
   min_size      = 5                         # Мінімальна кількість нодів
+  vpc_id        = module.vpc.vpc_id        # VPC ID для ALB Controller
 
   providers = {
     kubernetes = kubernetes.eks
