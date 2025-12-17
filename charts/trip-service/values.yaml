@@ -16,8 +16,8 @@ configmap:
     PORT: "3000"
     DB_HOST: "pg-shared-postgresql.postgresql.svc.cluster.local"
     DB_PORT: 5432
-    DB_USER: "postgres"
-    DB_NAME: "llt_trip"
+    POSTGRES_USER: "postgres"
+    POSTGRES_DB: "llt_trip"
 
 envFrom:
   - secretRef:

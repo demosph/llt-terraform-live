@@ -21,9 +21,9 @@ variable "github_repositories" {
   default = [
     "demosph/llt-auth-user-service",
     "BalakaMd/llt-trip-service",
-    "demosph/llt-integration-service",
+    "BalakaMd/llt-integration-service",
     "BalakaMd/llt-ai-recommender",
-    "BalakaMd/llt-api-gateway"
+    "demosph/llt-api-gateway"
   ]
 }
 
