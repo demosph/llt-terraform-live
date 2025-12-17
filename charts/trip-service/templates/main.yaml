@@ -1,9 +1,11 @@
-{{- include "svc.deployment" . }}
+{{ include "svc.deployment" . }}
 ---
-{{- include "svc.service" . }}
+{{ include "svc.service" . }}
 ---
-{{- include "svc.ingress" . }}
+{{ include "svc.ingress" . }}
 ---
-{{- include "svc.configmap" . }}
+{{ include "svc.configmap" . }}
 ---
-{{- include "svc.hpa" . }}
+{{include "svc.serviceaccount" . }}
+---
+{{ include "svc.hpa" . }}
