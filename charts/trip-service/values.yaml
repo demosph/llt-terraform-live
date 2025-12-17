@@ -33,6 +33,7 @@ ingress:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
     alb.ingress.kubernetes.io/healthcheck-path: /trip/health
+    alb.ingress.kubernetes.io/group.name: dev-llt
   hosts:
     - paths:
       - path: /trip/health
