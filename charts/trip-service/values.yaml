@@ -40,6 +40,8 @@ ingress:
         pathType: Prefix
       - path: /api/v1/trips
         pathType: Prefix
+      - path: /api/v1/users
+        pathType: Prefix
       - path: /trip/docs
         pathType: Prefix
 
