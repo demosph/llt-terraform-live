@@ -1,10 +1,10 @@
 image:
-  repository: 265766434317.dkr.ecr.us-east-2.amazonaws.com/llt-auth-service
+  repository: 265766434317.dkr.ecr.us-east-2.amazonaws.com/llt-ai-recommender
   tag: "latest"
   pullPolicy: Always
 
 service:
-  port: 3000
+  port: 8000
   type: ClusterIP
 
 replicaCount: 1
@@ -13,20 +13,20 @@ configmap:
   create: true
   data:
     NODE_ENV: "test"
-    PORT: "3000"
+    PORT: "8000"
     DB_HOST: "pg-shared-postgresql.postgresql.svc.cluster.local"
     DB_PORT: 5432
     POSTGRES_USER: "postgres"
-    POSTGRES_DB: "llt_auth"
-    CORS_ORIGIN: "*"
+    POSTGRES_DB: "llt_ai_recommender"
     JWT_ALG: "HS256"
-    ACCESS_TOKEN_TTL: "1h"
-    REFRESH_TOKEN_TTL: "10d"
-    GOOGLE_CLIENT_ID: "812448263301-a2lpffgig4ot2ai7ajm0s5qlsfsumvqi.apps.googleusercontent.com"
+    DEFAULT_LLM_PROVIDER: "openai"
+    INTEGRATION_SERVICE_URL: "http://integration-service.apps.svc.cluster.local:3003"
 
 envFrom:
   - secretRef:
       name: auth-jwt-db
+  - secretRef:
+      name: llm-api-keys
 
 env: [] # додаткові змінні, якщо треба
 
@@ -35,11 +35,11 @@ ingress:
 
 livenessProbe:
   enabled: true
-  httpGet: { path: /auth/health, port: http }
+  httpGet: { path: /recommender/health, port: http }
   initialDelaySeconds: 10
 readinessProbe:
   enabled: true
-  httpGet: { path: /auth/health, port: http }
+  httpGet: { path: /recommender/health, port: http }
   initialDelaySeconds: 5
 
 resources:

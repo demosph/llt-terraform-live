@@ -27,7 +27,8 @@ module "postgres_shared" {
   databases = [
     "llt_auth",
     "llt_trip",
-    "llt_integration"
+    "llt_integration",
+    "llt_ai_recommender"
   ]
 
   providers = {

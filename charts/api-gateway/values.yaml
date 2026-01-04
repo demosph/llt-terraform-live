@@ -1,0 +1,62 @@
+image:
+  repository: 265766434317.dkr.ecr.us-east-2.amazonaws.com/llt-api-gateway
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  port: 3000
+  type: ClusterIP
+
+replicaCount: 1
+
+configmap:
+  create: true
+  data:
+    NODE_ENV: "test"
+    PORT: "3000"
+    CORS_ORIGIN: "*"
+    JWT_ALG: "HS256"
+    IDEMPOTENCY_TTL_SECONDS: 86400
+    AUTH_SERVICE_URL: "http://auth-service.apps.svc.cluster.local:3000"
+    TRIP_SERVICE_URL: "http://trip-service.apps.svc.cluster.local:3000"
+    INTEGRATION_SERVICE_URL: "http://integration-service.apps.svc.cluster.local:3003"
+    AI_SERVICE_URL: "http://ai-recommender.apps.svc.cluster.local:8000"
+
+    PUBLIC_BASE_URL: "https://k8s-devllt-99044501de-1430547994.us-east-2.elb.amazonaws.com"
+
+envFrom:
+  - secretRef:
+      name: auth-jwt-db
+
+env: [] # додаткові змінні, якщо треба
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/group.name: dev-llt
+  hosts:
+    - paths:
+        - path: /api/health
+          pathType: Prefix
+        - path: /api/v1
+          pathType: Prefix
+
+livenessProbe:
+  enabled: true
+  httpGet: { path: /api/health, port: http }
+  initialDelaySeconds: 10
+readinessProbe:
+  enabled: true
+  httpGet: { path: /api/health, port: http }
+  initialDelaySeconds: 5
+
+resources:
+  requests: { cpu: 200m, memory: 256Mi }
+  limits: {}
+
+podSecurityContext: { enabled: true, fsGroup: 1001 }

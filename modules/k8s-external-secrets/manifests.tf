@@ -64,3 +64,77 @@ resource "kubernetes_manifest" "external_secret_auth_jwt_db" {
     kubernetes_manifest.cluster_secret_store_ssm
   ]
 }
+
+resource "kubernetes_manifest" "external_secret_llm_api_keys" {
+  manifest = {
+    apiVersion = "external-secrets.io/v1"
+    kind       = "ExternalSecret"
+    metadata = {
+      name      = "llm-api-keys"
+      namespace = var.eso_namespace
+    }
+    spec = {
+      refreshInterval = "1m"
+      secretStoreRef = {
+        name = "aws-ssm"
+        kind = "ClusterSecretStore"
+      }
+      target = {
+        name           = "llm-api-keys"
+        creationPolicy = "Owner"
+        template = {
+          type = "Opaque"
+        }
+      }
+      data = [
+        {
+          secretKey = "OPENAI_API_KEY"
+          remoteRef = { key = "/llm/openai/api-key" }
+        }
+      ]
+    }
+  }
+
+  depends_on = [
+    kubernetes_manifest.cluster_secret_store_ssm
+  ]
+}
+
+resource "kubernetes_manifest" "external_secret_ext_api_keys" {
+  manifest = {
+    apiVersion = "external-secrets.io/v1"
+    kind       = "ExternalSecret"
+    metadata = {
+      name      = "ext-api-keys"
+      namespace = var.eso_namespace
+    }
+    spec = {
+      refreshInterval = "1m"
+      secretStoreRef = {
+        name = "aws-ssm"
+        kind = "ClusterSecretStore"
+      }
+      target = {
+        name           = "ext-api-keys"
+        creationPolicy = "Owner"
+        template = {
+          type = "Opaque"
+        }
+      }
+      data = [
+        {
+          secretKey = "GOOGLE_MAPS_API_KEY"
+          remoteRef = { key = "/external/google-maps/api-key" }
+        },
+        {
+          secretKey = "OPENWEATHER_API_KEY"
+          remoteRef = { key = "/external/openweather/api-key" }
+        }
+      ]
+    }
+  }
+
+  depends_on = [
+    kubernetes_manifest.cluster_secret_store_ssm
+  ]
+}

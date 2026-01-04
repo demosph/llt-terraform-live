@@ -7,7 +7,7 @@ service:
   port: 3000
   type: ClusterIP
 
-replicaCount: 2
+replicaCount: 1
 
 configmap:
   create: true
@@ -23,27 +23,10 @@ envFrom:
   - secretRef:
       name: auth-jwt-db
 
-env: []  # додаткові змінні, якщо треба
+env: [] # додаткові змінні, якщо треба
 
 ingress:
-  enabled: true
-  className: alb
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
-    alb.ingress.kubernetes.io/healthcheck-path: /trip/health
-    alb.ingress.kubernetes.io/group.name: dev-llt
-  hosts:
-    - paths:
-      - path: /trip/health
-        pathType: Prefix
-      - path: /api/v1/trips
-        pathType: Prefix
-      - path: /api/v1/users
-        pathType: Prefix
-      - path: /trip/docs
-        pathType: Prefix
+  enabled: false
 
 livenessProbe:
   enabled: true

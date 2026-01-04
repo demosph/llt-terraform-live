@@ -1,0 +1,11 @@
+apiVersion: v2
+name: api-gateway
+description: API Gateway Service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: svc-lib
+    version: 0.1.0
+    repository: "file://../svc-lib"

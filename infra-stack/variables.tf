@@ -22,7 +22,7 @@ variable "github_repositories" {
     "demosph/llt-auth-user-service",
     "BalakaMd/llt-trip-service",
     "BalakaMd/llt-integration-service",
-    "BalakaMd/llt-ai-recommender",
+    "BalakaMd/llt-ai-recomender",
     "demosph/llt-api-gateway"
   ]
 }
