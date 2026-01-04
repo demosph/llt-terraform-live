@@ -41,11 +41,7 @@ ingress:
     alb.ingress.kubernetes.io/group.name: dev-llt
   hosts:
     - paths:
-        - path: /api/health
-          pathType: Prefix
-        - path: /api/v1
-          pathType: Prefix
-        - path: /api/docs
+        - path: /api
           pathType: Prefix
 
 livenessProbe:
