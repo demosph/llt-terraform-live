@@ -55,6 +55,10 @@ resource "kubernetes_manifest" "external_secret_auth_jwt_db" {
         {
           secretKey = "JWT_SECRET"
           remoteRef = { key = "/apps/jwt-secret" }
+        },
+        {
+          secretKey = "JWT_SECRET_KEY"
+          remoteRef = { key = "/apps/jwt-secret" }
         }
       ]
     }
