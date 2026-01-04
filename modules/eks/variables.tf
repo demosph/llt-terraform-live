@@ -43,12 +43,6 @@ variable "min_size" {
   default     = 1
 }
 
-variable "ssm_prefix" {
-  description = "SSM Parameter Store Prefix for Secrets"
-  type        = string
-  default     = "/apps"
-}
-
 variable "eso_namespace" {
   description = "Namespace for External Secrets Operator (ServiceAccount)"
   type        = string

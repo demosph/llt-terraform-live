@@ -14,9 +14,3 @@ variable "eso_service_account_name" {
   type        = string
   default     = "external-secrets"
 }
-
-variable "ssm_prefix" {
-  description = "SSM Parameter Store Prefix for Secrets"
-  type        = string
-  default     = "/apps/postgres"
-}

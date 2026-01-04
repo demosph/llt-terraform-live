@@ -15,8 +15,7 @@ data "aws_iam_policy_document" "eso_read" {
       "ssm:DescribeParameters"
     ]
     resources = [
-      "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_prefix}",
-      "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_prefix}/*"
+      "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/*"
     ]
   }
 }
@@ -30,7 +29,7 @@ resource "kubernetes_namespace_v1" "eso" {
 
 resource "aws_iam_policy" "eso_read" {
   name        = "${var.cluster_name}-eso-read"
-  description = "Read-only ESO access to ${var.ssm_prefix}"
+  description = "Read-only ESO access"
   policy      = data.aws_iam_policy_document.eso_read.json
 }
 

@@ -33,9 +33,9 @@ module "eks" {
   subnet_ids    = module.vpc.public_subnets # ID підмереж
   instance_type = "t3.small"                # Тип інстансів
   region        = var.region                # Регіон
-  desired_size  = 3                         # Бажана кількість нодів
+  desired_size  = 4                         # Бажана кількість нодів
   max_size      = 6                         # Максимальна кількість нодів
-  min_size      = 3                         # Мінімальна кількість нодів
+  min_size      = 4                         # Мінімальна кількість нодів
   vpc_id        = module.vpc.vpc_id         # VPC ID для ALB Controller
 
   providers = {
