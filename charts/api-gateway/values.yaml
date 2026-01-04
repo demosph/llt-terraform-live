@@ -45,6 +45,8 @@ ingress:
           pathType: Prefix
         - path: /api/v1
           pathType: Prefix
+        - path: /api/docs
+          pathType: Prefix
 
 livenessProbe:
   enabled: true
