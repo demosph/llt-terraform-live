@@ -17,3 +17,13 @@ output "argo_cd_server_service" {
 output "argo_cd_admin_password" {
   value = module.argo_cd.admin_password
 }
+
+#-------------Redis Cache-----------------
+
+output "redis_service_name" {
+  value = module.redis_cache.redis_service_name
+}
+
+output "redis_url" {
+  value = module.redis_cache.redis_url
+}

@@ -1,6 +1,6 @@
 data "aws_ssm_parameter" "postgres_password" {
-  name             = "/apps/postgres/password"
-  with_decryption  = true
+  name            = "/apps/postgres/password"
+  with_decryption = true
 }
 
 # Підключаємо модуль k8s-external-secrets
@@ -32,7 +32,7 @@ module "postgres_shared" {
   ]
 
   providers = {
-    helm = helm.eks,
+    helm       = helm.eks,
     kubernetes = kubernetes.eks
   }
 
@@ -41,12 +41,24 @@ module "postgres_shared" {
   ]
 }
 
+# Підключаємо модуль Redis Cache
+module "redis_cache" {
+  source           = "../modules/redis-cache"
+  namespace        = "apps"
+  create_namespace = true
+  release_name     = "redis-cache"
+
+  providers = {
+    helm = helm.eks
+  }
+}
+
 # Підключаємо модуль Argo CD
 module "argo_cd" {
-  source        = "../modules/argo-cd"
-  name          = "argo-cd"
-  namespace     = "argocd"
-  chart_version = "5.46.4"
+  source          = "../modules/argo-cd"
+  name            = "argo-cd"
+  namespace       = "argocd"
+  chart_version   = "5.46.4"
   github_user     = var.github_user
   github_pat      = var.github_pat
   github_repo_url = var.github_repo_url

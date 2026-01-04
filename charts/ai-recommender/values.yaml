@@ -20,7 +20,7 @@ configmap:
     POSTGRES_DB: "llt_ai_recommender"
     JWT_ALG: "HS256"
     DEFAULT_LLM_PROVIDER: "openai"
-    INTEGRATION_SERVICE_URL: "http://integration-service.apps.svc.cluster.local:3003"
+    INTEGRATION_SERVICE_URL: "http://integration-service-integration-service.apps.svc.cluster.local:3003"
 
 envFrom:
   - secretRef:

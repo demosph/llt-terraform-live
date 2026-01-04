@@ -18,7 +18,7 @@ configmap:
     DB_PORT: 5432
     POSTGRES_USER: "postgres"
     POSTGRES_DB: "llt_integration"
-    REDIS_URL: "redis://redis_cache:6379"
+    REDIS_URL: "redis://redis-cache-master.apps.svc.cluster.local:6379"
     GOOGLE_CALLBACK_URL: "http://localhost:3003/api/v1/integrations/calendar/google/callback"
 
 envFrom:
