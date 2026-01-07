@@ -22,7 +22,7 @@ configmap:
     INTEGRATION_SERVICE_URL: "http://integration-service-integration-service.apps.svc.cluster.local:3003"
     AI_SERVICE_URL: "http://ai-recommender-ai-recommender.apps.svc.cluster.local:8000"
 
-    PUBLIC_BASE_URL: "http://k8s-devllt-99044501de-874040911.us-east-2.elb.amazonaws.com"
+    PUBLIC_BASE_URL: "/"
 
 envFrom:
   - secretRef:
