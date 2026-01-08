@@ -21,6 +21,7 @@ configmap:
     JWT_ALG: "HS256"
     DEFAULT_LLM_PROVIDER: "openai"
     INTEGRATION_SERVICE_URL: "http://integration-service-integration-service.apps.svc.cluster.local:3003/api/v1/integrations"
+    DEBUG: true
 
 envFrom:
   - secretRef:
