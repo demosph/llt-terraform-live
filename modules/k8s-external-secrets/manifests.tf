@@ -94,7 +94,11 @@ resource "kubernetes_manifest" "external_secret_llm_api_keys" {
         {
           secretKey = "OPENAI_API_KEY"
           remoteRef = { key = "/llm/openai/api-key" }
-        }
+        },
+        {
+          secretKey = "ANTHROPIC_API_KEY"
+          remoteRef = { key = "/llm/anthropic/api-key" }
+        },
       ]
     }
   }
