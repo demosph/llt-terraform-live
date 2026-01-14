@@ -19,7 +19,7 @@ configmap:
     POSTGRES_USER: "postgres"
     POSTGRES_DB: "llt_integration"
     REDIS_URL: "redis://redis-cache-master.apps.svc.cluster.local:6379"
-    GOOGLE_CALLBACK_URL: "http://k8s-devllt-99044501de-1556497171.us-east-2.elb.amazonaws.com/api/v1/integrations/calendar/google/callback"
+    GOOGLE_CALLBACK_URL: "http://k8s-devllt-99044501de-317195572.us-east-2.elb.amazonaws.com/api/v1/integrations/calendar/google/callback"
 
 envFrom:
   - secretRef:
