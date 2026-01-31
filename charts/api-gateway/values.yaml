@@ -23,6 +23,8 @@ configmap:
     AI_SERVICE_URL: "http://ai-recommender-ai-recommender.apps.svc.cluster.local:8000"
 
     PUBLIC_BASE_URL: "/"
+    REQUEST_TIMEOUT_MS: 180000
+    PROXY_TIMEOUT_MS: 180000
 
 envFrom:
   - secretRef:
